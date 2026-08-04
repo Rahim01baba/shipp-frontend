@@ -1,0 +1,144 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #f5f6f8;
+  color: #1a1a1a;
+}
+
+.page {
+  padding: 2rem;
+}
+
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.error-banner {
+  background: #fdeceb;
+  color: #c0392b;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.rights-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.rights-users {
+  width: 260px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.rights-users ul {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.rights-users li {
+  margin-bottom: 0.25rem;
+}
+
+.rights-users button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.rights-users button.active {
+  background: #eef2ff;
+  color: #3b4fd9;
+  font-weight: 600;
+}
+
+.rights-users .email {
+  font-size: 0.75rem;
+  color: #888;
+  font-weight: 400;
+}
+
+.new-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.new-user-form input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.new-user-form button {
+  background: #3b4fd9;
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.rights-matrix {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.rights-matrix table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.rights-matrix th,
+.rights-matrix td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.rights-matrix th:not(:first-child),
+.rights-matrix td:not(:first-child) {
+  text-align: center;
+}
+
+.save-button {
+  background: #1a7f3c;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.save-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
