@@ -1,13 +1,18 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import Login from '../pages/Login.jsx'
 import Dashboard from '../pages/Dashboard.jsx'
 import Rights from '../pages/Rights.jsx'
+import ModuleCrud from '../pages/ModuleCrud.jsx'
 import NotFound from '../pages/NotFound.jsx'
 
 function PrivateRoute({ children }) {
-  const { user } = useAuth()
-  return user ? children : <Navigate to="/login" replace />
+  const { user, loading } = useAuth()
+  const location = useLocation()
+  if (loading) {
+    return <div className="page page-center">Chargement...</div>
+  }
+  return user ? children : <Navigate to="/login" state={{ from: location.pathname }} replace />
 }
 
 export function AppRouter() {
@@ -22,12 +27,22 @@ export function AppRouter() {
           </PrivateRoute>
         }
       />
-      {/*
-        TEMPORAIRE : /rights est accessible sans connexion tant que le
-        module Authentification (Prompt 01) n'est pas construit. A passer
-        derriere <PrivateRoute> des que le login fonctionnera.
-      */}
-      <Route path="/rights" element={<Rights />} />
+      <Route
+        path="/rights"
+        element={
+          <PrivateRoute>
+            <Rights />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/modules/:moduleKey"
+        element={
+          <PrivateRoute>
+            <ModuleCrud />
+          </PrivateRoute>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
