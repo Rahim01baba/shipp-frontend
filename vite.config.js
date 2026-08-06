@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Build en chemin relatif : permet de deployer le dossier "dist" dans n'importe
-// quel sous-dossier de cPanel (public_html/ ou public_html/app/) sans reconfiguration.
+// Base absolue : requis pour que le routing cote client (React Router) fonctionne
+// sur les routes profondes (ex: /modules/eleves) lors d'un rechargement direct.
+// Le deploiement Vercel sert l'app depuis la racine du domaine.
 export default defineConfig({
     plugins: [react()],
-    base: './',
+    base: '/',
     server: {
           port: 5173,
           proxy: {
