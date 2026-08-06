@@ -8,6 +8,7 @@ export const MODULES = [
     key: 'eleves',
     label: 'Eleves',
     fields: [
+      { key: 'code_dr', label: 'Code DR', type: 'text' },
       { key: 'nom', label: 'Nom', type: 'text' },
       { key: 'prenom', label: 'Prenom', type: 'text' },
       { key: 'date_naissance', label: 'Date de naissance', type: 'date' },
