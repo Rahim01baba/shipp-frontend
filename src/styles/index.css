@@ -158,3 +158,150 @@ body {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.module-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.module-link {
+  display: inline-block;
+  background: white;
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: #1a1a1a;
+  font-weight: 600;
+  min-width: 160px;
+  text-align: center;
+}
+
+.module-link:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  min-width: 280px;
+}
+
+.login-form button {
+  background: #3b4fd9;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.module-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: flex-end;
+  background: white;
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.module-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.module-form-field input {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-weight: 400;
+  min-width: 160px;
+}
+
+.module-form-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.module-form-actions button {
+  background: #3b4fd9;
+  color: white;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.module-form-actions button[type='button'] {
+  background: #e2e4e8;
+  color: #1a1a1a;
+}
+
+.module-table-wrap {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.module-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.module-table th,
+.module-table td {
+  border: 1px solid #e2e4e8;
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.module-table thead th {
+  background: #f5f6f8;
+  font-weight: 600;
+}
+
+.module-table-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.module-table-actions button {
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
