@@ -15,6 +15,18 @@ function PrivateRoute({ children }) {
   return user ? children : <Navigate to="/login" state={{ from: location.pathname }} replace />
 }
 
+function AdminRoute({ children }) {
+  const { user, loading, isAdmin, accessLoading } = useAuth()
+  const location = useLocation()
+  if (loading || accessLoading) {
+    return <div className="page page-center">Chargement...</div>
+  }
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location.pathname }} replace />
+  }
+  return isAdmin ? children : <Navigate to="/" replace />
+}
+
 export function AppRouter() {
   return (
     <Routes>
@@ -30,9 +42,9 @@ export function AppRouter() {
       <Route
         path="/rights"
         element={
-          <PrivateRoute>
+          <AdminRoute>
             <Rights />
-          </PrivateRoute>
+          </AdminRoute>
         }
       />
       <Route
