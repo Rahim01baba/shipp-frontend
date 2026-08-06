@@ -104,6 +104,30 @@ body {
   opacity: 0.55;
 }
 
+.rights-matrix-table tbody tr.role-row {
+  background: #eef0fb;
+}
+
+.rights-matrix-table tbody tr.role-row td.col-user {
+  background: #eef0fb;
+}
+
+.rights-matrix-table tbody tr.role-row .user-name {
+  color: #3b4fd9;
+}
+
+.rights-matrix-table tbody tr.role-row:hover {
+  background: #e4e7fa;
+}
+
+.rights-matrix-table tbody tr.role-row:hover td.col-user {
+  background: #e4e7fa;
+}
+
+.rights-matrix-table tbody tr:not(.role-row):first-of-type td.col-user {
+  border-top: 2px solid #9aa0ac;
+}
+
 .add-user-bar {
   display: flex;
   align-items: center;
