@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext.jsx'
 import { MODULES } from '../config/modules.js'
 
 export default function Dashboard() {
-  const { user, logout } = useAuth()
+  const { user, logout, isAdmin, can, accessLoading } = useAuth()
   const [status, setStatus] = useState('Verification de l\'API...')
 
   useEffect(() => {
@@ -14,6 +14,8 @@ export default function Dashboard() {
       .then((data) => setStatus(`API OK — base de donnees: ${data.db ? 'connectee' : 'indisponible'}`))
       .catch(() => setStatus('API injoignable'))
   }, [])
+
+  const visibleModules = MODULES.filter((m) => can(m.key, 'can_read'))
 
   return (
     <div className="page">
@@ -33,16 +35,23 @@ export default function Dashboard() {
       </div>
 
       <h2>Modules</h2>
-      <div className="module-links">
-        <Link to="/rights" className="module-link">
-          Gestion des droits
-        </Link>
-        {MODULES.map((m) => (
-          <Link key={m.key} to={`/modules/${m.key}`} className="module-link">
-            {m.label}
-          </Link>
-        ))}
-      </div>
+      {accessLoading ? (
+        <p>Chargement des droits...</p>
+      ) : (
+        <div className="module-links">
+          {isAdmin && (
+            <Link to="/rights" className="module-link">
+              Gestion des droits
+            </Link>
+          )}
+          {visibleModules.map((m) => (
+            <Link key={m.key} to={`/modules/${m.key}`} className="module-link">
+              {m.label}
+            </Link>
+          ))}
+          {visibleModules.length === 0 && !isAdmin && <p>Aucun module accessible avec votre compte.</p>}
+        </div>
+      )}
     </div>
   )
 }
