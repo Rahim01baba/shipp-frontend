@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { api } from '../api/client.js'
 import { MODULES } from '../config/modules.js'
+import { useAuth } from '../context/AuthContext.jsx'
 
 /**
  * Page CRUD generique — pilotee par la config MODULES.
  * Un seul composant reutilise pour les 12 modules metier : liste + formulaire
  * d'ajout/edition + suppression, tous branches sur l'endpoint crud.php
- * cote API (parametre ?module=...).
+ * cote API (parametre ?module=...). Les actions affichees sont filtrees
+ * selon les droits reels de l'utilisateur (can_read/can_create/can_edit/can_delete).
  */
 
 function emptyForm(fields) {
@@ -16,6 +18,7 @@ function emptyForm(fields) {
 
 export default function ModuleCrud() {
   const { moduleKey } = useParams()
+  const { can, accessLoading } = useAuth()
   const moduleDef = MODULES.find((m) => m.key === moduleKey)
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
@@ -23,6 +26,11 @@ export default function ModuleCrud() {
   const [form, setForm] = useState(moduleDef ? emptyForm(moduleDef.fields) : {})
   const [editingId, setEditingId] = useState(null)
   const [saving, setSaving] = useState(false)
+
+  const canRead = can(moduleKey, 'can_read')
+  const canCreate = can(moduleKey, 'can_create')
+  const canEdit = can(moduleKey, 'can_edit')
+  const canDelete = can(moduleKey, 'can_delete')
 
   async function load(def) {
     if (!def) return
@@ -41,15 +49,39 @@ export default function ModuleCrud() {
   useEffect(() => {
     setForm(moduleDef ? emptyForm(moduleDef.fields) : {})
     setEditingId(null)
-    load(moduleDef)
+    if (accessLoading) return
+    if (canRead) {
+      load(moduleDef)
+    } else {
+      setLoading(false)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moduleKey])
+  }, [moduleKey, accessLoading, canRead])
 
   if (!moduleDef) {
     return (
       <div className="page">
         <p>Module inconnu.</p>
         <Link to="/">Retour au tableau de bord</Link>
+      </div>
+    )
+  }
+
+  if (accessLoading) {
+    return (
+      <div className="page">
+        <p>Chargement des droits...</p>
+      </div>
+    )
+  }
+
+  if (!canRead) {
+    return (
+      <div className="page">
+        <p>
+          <Link to="/">&larr; Tableau de bord</Link>
+        </p>
+        <p className="error-banner">Acces refuse : vous n'avez pas les droits pour consulter ce module.</p>
       </div>
     )
   }
@@ -97,6 +129,9 @@ export default function ModuleCrud() {
     }
   }
 
+  const showForm = editingId ? canEdit : canCreate
+  const showActionsColumn = canEdit || canDelete
+
   return (
     <div className="page">
       <p>
@@ -105,28 +140,30 @@ export default function ModuleCrud() {
       <h1>{moduleDef.label}</h1>
       {error && <p className="error-banner">{error}</p>}
 
-      <form onSubmit={submit} className="module-form">
-        {moduleDef.fields.map((f) => (
-          <label key={f.key} className="module-form-field">
-            <span>{f.label}</span>
-            <input
-              type={f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : f.type === 'email' ? 'email' : 'text'}
-              value={form[f.key] ?? ''}
-              onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-            />
-          </label>
-        ))}
-        <div className="module-form-actions">
-          <button type="submit" disabled={saving}>
-            {editingId ? 'Mettre a jour' : 'Ajouter'}
-          </button>
-          {editingId && (
-            <button type="button" onClick={cancelEdit}>
-              Annuler
+      {showForm && (
+        <form onSubmit={submit} className="module-form">
+          {moduleDef.fields.map((f) => (
+            <label key={f.key} className="module-form-field">
+              <span>{f.label}</span>
+              <input
+                type={f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : f.type === 'email' ? 'email' : 'text'}
+                value={form[f.key] ?? ''}
+                onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+              />
+            </label>
+          ))}
+          <div className="module-form-actions">
+            <button type="submit" disabled={saving}>
+              {editingId ? 'Mettre a jour' : 'Ajouter'}
             </button>
-          )}
-        </div>
-      </form>
+            {editingId && (
+              <button type="button" onClick={cancelEdit}>
+                Annuler
+              </button>
+            )}
+          </div>
+        </form>
+      )}
 
       {loading ? (
         <p>Chargement...</p>
@@ -138,7 +175,7 @@ export default function ModuleCrud() {
                 {moduleDef.fields.map((f) => (
                   <th key={f.key}>{f.label}</th>
                 ))}
-                <th>Actions</th>
+                {showActionsColumn && <th>Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -147,19 +184,27 @@ export default function ModuleCrud() {
                   {moduleDef.fields.map((f) => (
                     <td key={f.key}>{row[f.key]}</td>
                   ))}
-                  <td className="module-table-actions">
-                    <button type="button" onClick={() => startEdit(row)}>
-                      Modifier
-                    </button>
-                    <button type="button" onClick={() => remove(row.id)}>
-                      Supprimer
-                    </button>
-                  </td>
+                  {showActionsColumn && (
+                    <td className="module-table-actions">
+                      {canEdit && (
+                        <button type="button" onClick={() => startEdit(row)}>
+                          Modifier
+                        </button>
+                      )}
+                      {canDelete && (
+                        <button type="button" onClick={() => remove(row.id)}>
+                          Supprimer
+                        </button>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={moduleDef.fields.length + 1}>Aucune donnee. Ajoutes-en une ci-dessus.</td>
+                  <td colSpan={moduleDef.fields.length + (showActionsColumn ? 1 : 0)}>
+                    Aucune donnee.{canCreate ? ' Ajoutes-en une ci-dessus.' : ''}
+                  </td>
                 </tr>
               )}
             </tbody>
