@@ -2,20 +2,27 @@ import { Fragment, useEffect, useState } from 'react'
 import { api } from '../api/client.js'
 
 /**
- * Gestion des droits — matrice type Jenkins (Prompt 02).
+ * Gestion des droits — matrice type Jenkins (Prompt 02) + rôles (Prompt 03).
  *
  * Une seule grande table : chaque module est un groupe de 4 colonnes
- * (C = Création, E = Édition, S = Suppression, L = Lecture) et chaque
- * ligne est un utilisateur. Chaque case a cocher sauvegarde immédiatement
- * en base (pas de bouton "Enregistrer" global).
+ * (C = Création, E = Édition, S = Suppression, L = Lecture).
+ * Les lignes du haut sont les 3 rôles par défaut (Eleves, Parent, Admin) :
+ * elles portent les permissions de base appliquées à tout le monde dans ce
+ * rôle. Les lignes du bas sont des utilisateurs individuels identifiés par
+ * email, qui servent d'exceptions/dérogations au-dessus du rôle. Chaque
+ * case a cocher sauvegarde immédiatement en base (pas de bouton
+ * "Enregistrer" global).
  */
 export default function Rights() {
   const [users, setUsers] = useState([])
   const [modules, setModules] = useState([])
   const [grid, setGrid] = useState({})
+  const [roles, setRoles] = useState([])
+  const [roleGrid, setRoleGrid] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [savingUserId, setSavingUserId] = useState(null)
+  const [savingRoleId, setSavingRoleId] = useState(null)
   const [newUser, setNewUser] = useState({ name: '', email: '' })
 
   async function loadMatrix() {
@@ -26,6 +33,8 @@ export default function Rights() {
       setUsers(data.users)
       setModules(data.modules)
       setGrid(data.grid || {})
+      setRoles(data.roles || [])
+      setRoleGrid(data.roleGrid || {})
     } catch (e) {
       setError(e.message)
     } finally {
@@ -39,6 +48,10 @@ export default function Rights() {
 
   function cellValue(userId, moduleId, field) {
     return !!grid[userId]?.[moduleId]?.[field]
+  }
+
+  function roleCellValue(roleId, moduleId, field) {
+    return !!roleGrid[roleId]?.[moduleId]?.[field]
   }
 
   async function toggle(userId, moduleId, field) {
@@ -78,6 +91,46 @@ export default function Rights() {
       setGrid(prevGrid)
     } finally {
       setSavingUserId(null)
+    }
+  }
+
+  async function toggleRole(roleId, moduleId, field) {
+    const prevRoleGrid = roleGrid
+    const roleGridForRole = roleGrid[roleId] || {}
+    const current = roleGridForRole[moduleId] || {
+      can_read: false,
+      can_create: false,
+      can_edit: false,
+      can_delete: false,
+    }
+    const updatedCell = { ...current, [field]: !current[field] }
+    const nextRoleGridForRole = { ...roleGridForRole, [moduleId]: updatedCell }
+    const nextRoleGrid = { ...roleGrid, [roleId]: nextRoleGridForRole }
+    setRoleGrid(nextRoleGrid)
+    setSavingRoleId(roleId)
+    setError(null)
+    try {
+      const permissions = modules.map((mod) => {
+        const cell = nextRoleGridForRole[mod.id] || {
+          can_read: false,
+          can_create: false,
+          can_edit: false,
+          can_delete: false,
+        }
+        return {
+          permission_id: mod.id,
+          can_read: !!cell.can_read,
+          can_create: !!cell.can_create,
+          can_edit: !!cell.can_edit,
+          can_delete: !!cell.can_delete,
+        }
+      })
+      await api.post('/permissions-update.php', { role_id: roleId, permissions })
+    } catch (e) {
+      setError(e.message)
+      setRoleGrid(prevRoleGrid)
+    } finally {
+      setSavingRoleId(null)
     }
   }
 
@@ -138,6 +191,49 @@ export default function Rights() {
             </tr>
           </thead>
           <tbody>
+            {roles.map((role) => (
+              <tr
+                key={`role-${role.id}`}
+                className={`role-row${savingRoleId === role.id ? ' row-saving' : ''}`}
+              >
+                <td className="col-user">
+                  <div className="user-name">{role.role_label}</div>
+                  <div className="email">Rôle par défaut</div>
+                </td>
+                {modules.map((mod) => (
+                  <Fragment key={mod.id}>
+                    <td className="col-sub">
+                      <input
+                        type="checkbox"
+                        checked={roleCellValue(role.id, mod.id, 'can_create')}
+                        onChange={() => toggleRole(role.id, mod.id, 'can_create')}
+                      />
+                    </td>
+                    <td className="col-sub">
+                      <input
+                        type="checkbox"
+                        checked={roleCellValue(role.id, mod.id, 'can_edit')}
+                        onChange={() => toggleRole(role.id, mod.id, 'can_edit')}
+                      />
+                    </td>
+                    <td className="col-sub">
+                      <input
+                        type="checkbox"
+                        checked={roleCellValue(role.id, mod.id, 'can_delete')}
+                        onChange={() => toggleRole(role.id, mod.id, 'can_delete')}
+                      />
+                    </td>
+                    <td className="col-sub col-sub-last">
+                      <input
+                        type="checkbox"
+                        checked={roleCellValue(role.id, mod.id, 'can_read')}
+                        onChange={() => toggleRole(role.id, mod.id, 'can_read')}
+                      />
+                    </td>
+                  </Fragment>
+                ))}
+              </tr>
+            ))}
             {users.map((u) => (
               <tr key={u.id} className={savingUserId === u.id ? 'row-saving' : ''}>
                 <td className="col-user">
@@ -178,9 +274,9 @@ export default function Rights() {
                 ))}
               </tr>
             ))}
-            {users.length === 0 && (
+            {users.length === 0 && roles.length === 0 && (
               <tr>
-                <td colSpan={colCount}>Aucun utilisateur. Ajoutes-en un ci-dessous.</td>
+                <td colSpan={colCount}>Aucun rôle ni utilisateur. Ajoutes-en un ci-dessous.</td>
               </tr>
             )}
           </tbody>
@@ -188,7 +284,7 @@ export default function Rights() {
       </div>
 
       <form onSubmit={createUser} className="add-user-bar">
-        <span className="add-user-label">Utilisateur a ajouter :</span>
+        <span className="add-user-label">Utilisateur a ajouter (exception) :</span>
         <input
           type="text"
           placeholder="Nom"
