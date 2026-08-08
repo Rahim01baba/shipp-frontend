@@ -54,6 +54,11 @@ export default function Dashboard() {
               Trajets
             </Link>
           )}
+          {can('scans', 'can_create') && (
+            <Link to="/scanner" className="module-link">
+              Scanner
+            </Link>
+          )}
           {visibleModules.map((m) => (
             <Link key={m.key} to={`/modules/${m.key}`} className="module-link">
               {m.label}
