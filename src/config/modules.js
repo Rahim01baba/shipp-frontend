@@ -94,6 +94,16 @@ export const MODULES = [
     label: 'Menus',
     fields: [
       { key: 'date_menu', label: 'Date', type: 'date' },
+      {
+        key: 'periode',
+        label: 'Periode',
+        type: 'select',
+        options: [
+          { value: 'petit_dejeuner', label: 'Petit dejeuner' },
+          { value: 'dejeuner', label: 'Dejeuner' },
+          { value: 'gouter', label: 'Gouter' },
+        ],
+      },
       { key: 'libelle', label: 'Libelle', type: 'text' },
       { key: 'description', label: 'Description', type: 'text' },
     ],
