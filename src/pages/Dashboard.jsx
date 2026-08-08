@@ -49,6 +49,11 @@ export default function Dashboard() {
               Annees scolaires
             </Link>
           )}
+          {can('trajets', 'can_read') && (
+            <Link to="/trajets" className="module-link">
+              Trajets
+            </Link>
+          )}
           {visibleModules.map((m) => (
             <Link key={m.key} to={`/modules/${m.key}`} className="module-link">
               {m.label}
