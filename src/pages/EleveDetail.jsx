@@ -18,7 +18,7 @@ const API_URL = import.meta.env.VITE_API_URL || '/api'
 
 export default function EleveDetail() {
   const { id } = useParams()
-  const { can } = useAuth()
+  const { can, accessLoading } = useAuth()
   const [eleve, setEleve] = useState(null)
   const [abonnements, setAbonnements] = useState([])
   const [loading, setLoading] = useState(true)
@@ -49,9 +49,10 @@ export default function EleveDetail() {
   }
 
   useEffect(() => {
+    if (accessLoading) return
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id])
+  }, [id, accessLoading])
 
   async function uploadPhoto(e) {
     e.preventDefault()
