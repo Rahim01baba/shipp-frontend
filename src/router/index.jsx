@@ -9,6 +9,7 @@ import AnneesScolaires from '../pages/AnneesScolaires.jsx'
 import CircuitDetail from '../pages/CircuitDetail.jsx'
 import Trajets from '../pages/Trajets.jsx'
 import Scanner from '../pages/Scanner.jsx'
+import CantineService from '../pages/CantineService.jsx'
 import NotFound from '../pages/NotFound.jsx'
 
 function PrivateRoute({ children }) {
@@ -97,6 +98,14 @@ export function AppRouter() {
         element={
           <PrivateRoute>
             <Scanner />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/cantine-service"
+        element={
+          <PrivateRoute>
+            <CantineService />
           </PrivateRoute>
         }
       />
