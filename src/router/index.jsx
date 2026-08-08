@@ -10,6 +10,7 @@ import CircuitDetail from '../pages/CircuitDetail.jsx'
 import Trajets from '../pages/Trajets.jsx'
 import Scanner from '../pages/Scanner.jsx'
 import CantineService from '../pages/CantineService.jsx'
+import Notifications from '../pages/Notifications.jsx'
 import NotFound from '../pages/NotFound.jsx'
 
 function PrivateRoute({ children }) {
@@ -106,6 +107,14 @@ export function AppRouter() {
         element={
           <PrivateRoute>
             <CantineService />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <PrivateRoute>
+            <Notifications />
           </PrivateRoute>
         }
       />
