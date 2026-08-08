@@ -5,10 +5,11 @@ import { api } from '../api/client.js'
 import { MODULES } from '../config/modules.js'
 
 export default function Dashboard() {
-  const { user, logout, isAdmin, can, accessLoading } = useAuth()
+  const { user, logout, isAdmin, can, accessLoading, parentEleveIds } = useAuth()
   const [status, setStatus] = useState('Verification de l\'API...')
   const [widgets, setWidgets] = useState(null)
   const [notifCount, setNotifCount] = useState(0)
+  const [myChildren, setMyChildren] = useState([])
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || '/api'
@@ -51,6 +52,9 @@ export default function Dashboard() {
         w.scans = { total: list.length }
       }
       setWidgets(w)
+      if (parentEleveIds && parentEleveIds.length > 0 && eleves) {
+        setMyChildren(eleves.data || [])
+      }
 
       if (notifications) {
         const nonLues = (notifications.data || []).filter((n) => n.statut !== 'lue').length
@@ -78,6 +82,19 @@ export default function Dashboard() {
           Se deconnecter
         </button>
       </div>
+
+      {parentEleveIds && parentEleveIds.length > 0 && (
+        <>
+          <h2>Mes enfants</h2>
+          <div className="module-links">
+            {myChildren.map((e) => (
+              <Link key={e.id} to={`/eleves/${e.id}`} className="module-link">
+                {e.nom} {e.prenom}
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
 
       {widgets && (
         <div className="dashboard-widgets">
@@ -121,6 +138,21 @@ export default function Dashboard() {
           {isAdmin && (
             <Link to="/annees-scolaires" className="module-link">
               Annees scolaires
+            </Link>
+          )}
+          {isAdmin && (
+            <Link to="/parents" className="module-link">
+              Parents
+            </Link>
+          )}
+          {isAdmin && (
+            <Link to="/journal-activite" className="module-link">
+              Journal d'activite
+            </Link>
+          )}
+          {isAdmin && (
+            <Link to="/modules-ecole" className="module-link">
+              Modules par ecole
             </Link>
           )}
           {can('trajets', 'can_read') && (
