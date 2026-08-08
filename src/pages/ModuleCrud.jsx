@@ -145,11 +145,22 @@ export default function ModuleCrud() {
           {moduleDef.fields.map((f) => (
             <label key={f.key} className="module-form-field">
               <span>{f.label}</span>
-              <input
-                type={f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : f.type === 'email' ? 'email' : 'text'}
-                value={form[f.key] ?? ''}
-                onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
-              />
+              {f.type === 'select' ? (
+                <select value={form[f.key] ?? ''} onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}>
+                  <option value="">-- Choisir --</option>
+                  {(f.options || []).map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={f.type === 'number' ? 'number' : f.type === 'date' ? 'date' : f.type === 'email' ? 'email' : 'text'}
+                  value={form[f.key] ?? ''}
+                  onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+                />
+              )}
             </label>
           ))}
           <div className="module-form-actions">
