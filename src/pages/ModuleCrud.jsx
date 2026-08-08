@@ -186,6 +186,11 @@ export default function ModuleCrud() {
                   ))}
                   {showActionsColumn && (
                     <td className="module-table-actions">
+                      {moduleKey === 'eleves' && (
+                        <Link to={`/eleves/${row.id}`} className="module-table-link">
+                          Voir la fiche
+                        </Link>
+                      )}
                       {canEdit && (
                         <button type="button" onClick={() => startEdit(row)}>
                           Modifier
