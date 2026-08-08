@@ -305,3 +305,46 @@ body {
   cursor: pointer;
   font-size: 0.8rem;
 }
+
+.eleve-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.eleve-detail-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.eleve-detail-card h2 {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.abonnement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.abonnement-row:last-child {
+  border-bottom: none;
+}
+
+.module-table-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-right: 8px;
+}
+
+.module-table-link:hover {
+  text-decoration: underline;
+}
