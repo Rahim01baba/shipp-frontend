@@ -375,3 +375,76 @@ body {
   margin-left: auto;
   font-size: 0.8rem;
 }
+
+.scanner-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.scanner-tabs button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.scanner-tabs button.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.scanner-camera {
+  margin: 12px 0;
+}
+
+.scanner-video {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 8px;
+  background: #000;
+}
+
+.scanner-search input,
+.scanner-code input {
+  width: 100%;
+  max-width: 420px;
+  padding: 8px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.scanner-search-results {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  max-width: 420px;
+}
+
+.scanner-search-results li button {
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.scanner-confirmation {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  max-width: 420px;
+}
+
+.scanner-abo-warning {
+  color: #b45309;
+  font-weight: 600;
+}
