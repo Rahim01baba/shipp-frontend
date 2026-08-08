@@ -44,6 +44,11 @@ export default function Dashboard() {
               Gestion des droits
             </Link>
           )}
+          {isAdmin && (
+            <Link to="/annees-scolaires" className="module-link">
+              Annees scolaires
+            </Link>
+          )}
           {visibleModules.map((m) => (
             <Link key={m.key} to={`/modules/${m.key}`} className="module-link">
               {m.label}
