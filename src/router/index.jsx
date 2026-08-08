@@ -11,6 +11,9 @@ import Trajets from '../pages/Trajets.jsx'
 import Scanner from '../pages/Scanner.jsx'
 import CantineService from '../pages/CantineService.jsx'
 import Notifications from '../pages/Notifications.jsx'
+import Parents from '../pages/Parents.jsx'
+import JournalActivite from '../pages/JournalActivite.jsx'
+import ModulesEcole from '../pages/ModulesEcole.jsx'
 import NotFound from '../pages/NotFound.jsx'
 
 function PrivateRoute({ children }) {
@@ -116,6 +119,30 @@ export function AppRouter() {
           <PrivateRoute>
             <Notifications />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="/parents"
+        element={
+          <AdminRoute>
+            <Parents />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/journal-activite"
+        element={
+          <AdminRoute>
+            <JournalActivite />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/modules-ecole"
+        element={
+          <AdminRoute>
+            <ModulesEcole />
+          </AdminRoute>
         }
       />
       <Route path="*" element={<NotFound />} />
