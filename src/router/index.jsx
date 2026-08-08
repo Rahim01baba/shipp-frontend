@@ -4,6 +4,8 @@ import Login from '../pages/Login.jsx'
 import Dashboard from '../pages/Dashboard.jsx'
 import Rights from '../pages/Rights.jsx'
 import ModuleCrud from '../pages/ModuleCrud.jsx'
+import EleveDetail from '../pages/EleveDetail.jsx'
+import AnneesScolaires from '../pages/AnneesScolaires.jsx'
 import NotFound from '../pages/NotFound.jsx'
 
 function PrivateRoute({ children }) {
@@ -48,10 +50,26 @@ export function AppRouter() {
         }
       />
       <Route
+        path="/annees-scolaires"
+        element={
+          <AdminRoute>
+            <AnneesScolaires />
+          </AdminRoute>
+        }
+      />
+      <Route
         path="/modules/:moduleKey"
         element={
           <PrivateRoute>
             <ModuleCrud />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/eleves/:id"
+        element={
+          <PrivateRoute>
+            <EleveDetail />
           </PrivateRoute>
         }
       />
