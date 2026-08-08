@@ -31,6 +31,8 @@ export default function ModuleCrud() {
   const canCreate = can(moduleKey, 'can_create')
   const canEdit = can(moduleKey, 'can_edit')
   const canDelete = can(moduleKey, 'can_delete')
+  const canValidate = can(moduleKey, 'can_validate')
+  const canExport = can(moduleKey, 'can_export')
 
   async function load(def) {
     if (!def) return
@@ -43,6 +45,29 @@ export default function ModuleCrud() {
       setError(e.message)
     } finally {
       setLoading(false)
+    }
+  }
+
+  function exportCsv() {
+    if (!rows.length) return
+    const keys = Object.keys(rows[0])
+    const escape = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`
+    const csv = [keys.join(','), ...rows.map((r) => keys.map((k) => escape(r[k])).join(','))].join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${moduleKey}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  async function validateRow(row) {
+    try {
+      await api.put(`/crud.php?module=${moduleKey}`, { id: row.id, statut: 'actif' })
+      await load(moduleDef)
+    } catch (e) {
+      setError(e.message)
     }
   }
 
@@ -138,6 +163,11 @@ export default function ModuleCrud() {
         <Link to="/">&larr; Tableau de bord</Link>
       </p>
       <h1>{moduleDef.label}</h1>
+      {canExport && rows.length > 0 && (
+        <button type="button" onClick={exportCsv}>
+          Exporter CSV
+        </button>
+      )}
       {error && <p className="error-banner">{error}</p>}
 
       {showForm && (
@@ -210,6 +240,11 @@ export default function ModuleCrud() {
                       {canEdit && (
                         <button type="button" onClick={() => startEdit(row)}>
                           Modifier
+                        </button>
+                      )}
+                      {moduleKey === 'abonnements' && canValidate && row.statut !== 'actif' && (
+                        <button type="button" onClick={() => validateRow(row)}>
+                          Valider
                         </button>
                       )}
                       {canDelete && (
