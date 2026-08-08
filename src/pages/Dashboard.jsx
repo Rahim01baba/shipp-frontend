@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import { api } from '../api/client.js'
 import { MODULES } from '../config/modules.js'
 
 export default function Dashboard() {
   const { user, logout, isAdmin, can, accessLoading } = useAuth()
   const [status, setStatus] = useState('Verification de l\'API...')
+  const [widgets, setWidgets] = useState(null)
+  const [notifCount, setNotifCount] = useState(0)
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL || '/api'
@@ -14,6 +17,48 @@ export default function Dashboard() {
       .then((data) => setStatus(`API OK — base de donnees: ${data.db ? 'connectee' : 'indisponible'}`))
       .catch(() => setStatus('API injoignable'))
   }, [])
+
+  useEffect(() => {
+    if (accessLoading) return
+    async function loadWidgets() {
+      const today = new Date().toISOString().slice(0, 10)
+      const [eleves, abonnements, trajets, scans, notifications] = await Promise.all([
+        can('eleves', 'can_read') ? api.get('/crud.php?module=eleves') : Promise.resolve(null),
+        can('abonnements', 'can_read') ? api.get('/crud.php?module=abonnements') : Promise.resolve(null),
+        can('trajets', 'can_read') ? api.get('/crud.php?module=trajets') : Promise.resolve(null),
+        can('scans', 'can_read') ? api.get('/crud.php?module=scans') : Promise.resolve(null),
+        can('notifications', 'can_read') ? api.get('/crud.php?module=notifications') : Promise.resolve(null),
+      ])
+
+      const w = {}
+      if (eleves) {
+        const list = eleves.data || []
+        w.eleves = { total: list.length, actifs: list.filter((e) => e.statut === 'actif').length }
+      }
+      if (abonnements) {
+        const list = abonnements.data || []
+        w.abonnements = { total: list.length, actifs: list.filter((a) => a.statut === 'actif').length }
+      }
+      if (trajets) {
+        const list = (trajets.data || []).filter((t) => t.date_trajet === today)
+        w.trajets = {
+          total: list.length,
+          enCours: list.filter((t) => t.statut === 'en_cours').length,
+        }
+      }
+      if (scans) {
+        const list = (scans.data || []).filter((s) => (s.scanned_at || '').slice(0, 10) === today)
+        w.scans = { total: list.length }
+      }
+      setWidgets(w)
+
+      if (notifications) {
+        const nonLues = (notifications.data || []).filter((n) => n.statut !== 'lue').length
+        setNotifCount(nonLues)
+      }
+    }
+    loadWidgets()
+  }, [accessLoading, can])
 
   const visibleModules = MODULES.filter((m) => can(m.key, 'can_read'))
 
@@ -33,6 +78,35 @@ export default function Dashboard() {
           Se deconnecter
         </button>
       </div>
+
+      {widgets && (
+        <div className="dashboard-widgets">
+          {widgets.eleves && (
+            <div className="dashboard-widget">
+              <span className="dashboard-widget-value">{widgets.eleves.actifs}</span>
+              <span className="dashboard-widget-label">Eleves actifs / {widgets.eleves.total}</span>
+            </div>
+          )}
+          {widgets.abonnements && (
+            <div className="dashboard-widget">
+              <span className="dashboard-widget-value">{widgets.abonnements.actifs}</span>
+              <span className="dashboard-widget-label">Abonnements actifs / {widgets.abonnements.total}</span>
+            </div>
+          )}
+          {widgets.trajets && (
+            <div className="dashboard-widget">
+              <span className="dashboard-widget-value">{widgets.trajets.enCours}</span>
+              <span className="dashboard-widget-label">Trajets en cours ({widgets.trajets.total} aujourd'hui)</span>
+            </div>
+          )}
+          {widgets.scans && (
+            <div className="dashboard-widget">
+              <span className="dashboard-widget-value">{widgets.scans.total}</span>
+              <span className="dashboard-widget-label">Scans aujourd'hui</span>
+            </div>
+          )}
+        </div>
+      )}
 
       <h2>Modules</h2>
       {accessLoading ? (
@@ -62,6 +136,11 @@ export default function Dashboard() {
           {can('scans', 'can_create') && (
             <Link to="/cantine-service" className="module-link">
               Service Cantine
+            </Link>
+          )}
+          {can('notifications', 'can_read') && (
+            <Link to="/notifications" className="module-link">
+              Notifications{notifCount > 0 ? ` (${notifCount})` : ''}
             </Link>
           )}
           {visibleModules.map((m) => (
