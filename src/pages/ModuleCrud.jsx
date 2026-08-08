@@ -191,6 +191,11 @@ export default function ModuleCrud() {
                           Voir la fiche
                         </Link>
                       )}
+                      {moduleKey === 'circuits' && (
+                        <Link to={`/circuits/${row.id}`} className="module-table-link">
+                          Voir les etapes
+                        </Link>
+                      )}
                       {canEdit && (
                         <button type="button" onClick={() => startEdit(row)}>
                           Modifier
