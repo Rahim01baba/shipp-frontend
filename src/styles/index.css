@@ -448,3 +448,17 @@ body {
   color: #b45309;
   font-weight: 600;
 }
+
+.cantine-menu-jour {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin: 12px 0;
+  max-width: 420px;
+}
+
+.cantine-menu-libelle {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
