@@ -348,3 +348,30 @@ body {
 .module-table-link:hover {
   text-decoration: underline;
 }
+
+.etapes-list {
+  list-style: decimal;
+  padding-left: 20px;
+  margin: 12px 0;
+}
+
+.etapes-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.etapes-list-nom {
+  font-weight: 600;
+}
+
+.etapes-list-heure {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.etapes-list-remove {
+  margin-left: auto;
+  font-size: 0.8rem;
+}
