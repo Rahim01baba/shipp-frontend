@@ -3,7 +3,7 @@ import { api, setToken } from '../api/client.js'
 
 const AuthContext = createContext(null)
 
-const emptyAccess = { is_admin: false, permissions: {} }
+const emptyAccess = { is_admin: false, permissions: {}, parent_eleve_ids: [] }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -15,7 +15,13 @@ export function AuthProvider({ children }) {
     setAccessLoading(true)
     return api
       .get('/permissions-me.php')
-      .then((data) => setAccess({ is_admin: !!data.is_admin, permissions: data.permissions || {} }))
+      .then((data) =>
+        setAccess({
+          is_admin: !!data.is_admin,
+          permissions: data.permissions || {},
+          parent_eleve_ids: data.parent_eleve_ids || [],
+        })
+      )
       .catch(() => setAccess(emptyAccess))
       .finally(() => setAccessLoading(false))
   }
@@ -62,6 +68,7 @@ export function AuthProvider({ children }) {
         loading,
         isAdmin: access.is_admin,
         permissions: access.permissions,
+        parentEleveIds: access.parent_eleve_ids,
         accessLoading,
         can,
       }}
