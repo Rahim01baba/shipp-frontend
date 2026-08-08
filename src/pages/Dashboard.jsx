@@ -59,6 +59,11 @@ export default function Dashboard() {
               Scanner
             </Link>
           )}
+          {can('scans', 'can_create') && (
+            <Link to="/cantine-service" className="module-link">
+              Service Cantine
+            </Link>
+          )}
           {visibleModules.map((m) => (
             <Link key={m.key} to={`/modules/${m.key}`} className="module-link">
               {m.label}
