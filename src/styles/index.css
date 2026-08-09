@@ -594,3 +594,31 @@ body {
   font-weight: 400;
   font-size: 0.9rem;
 }
+
+/* Distinction visuelle des boutons par domaine : transport (bleu),
+   cantine (orange), commun (style par defaut, non colore). */
+button.btn-transport {
+  background: #2563eb;
+  color: #fff;
+  border: 1px solid #2563eb;
+}
+
+button.btn-transport:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+button.btn-cantine {
+  background: #ea580c;
+  color: #fff;
+  border: 1px solid #ea580c;
+}
+
+button.btn-cantine:hover:not(:disabled) {
+  background: #c2410c;
+}
+
+button.btn-transport:disabled,
+button.btn-cantine:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
