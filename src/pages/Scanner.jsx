@@ -308,7 +308,7 @@ export default function Scanner() {
                 </select>
               </label>
               <div className="module-form-actions">
-                <button type="button" disabled={validating} onClick={validateScan}>
+                <button type="button" className={scanType.startsWith('transport') ? 'btn-transport' : 'btn-cantine'} disabled={validating} onClick={validateScan}>
                   {validating ? 'Validation...' : 'Valider le scan'}
                 </button>
                 <button type="button" onClick={() => setSelectedEleve(null)}>
