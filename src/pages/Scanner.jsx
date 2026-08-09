@@ -43,6 +43,7 @@ export default function Scanner() {
   const [cameraError, setCameraError] = useState(null)
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
+  const elevesRef = useRef([])
 
   const canCreate = can('scans', 'can_create')
 
@@ -73,10 +74,14 @@ export default function Scanner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessLoading])
 
+  useEffect(() => {
+    elevesRef.current = eleves
+  }, [eleves])
+
   function findByCode(value) {
     const v = value.trim().toLowerCase()
     if (!v) return null
-    return eleves.find((e) => (e.qr_code || '').toLowerCase() === v || (e.code_dr || '').toLowerCase() === v)
+    return elevesRef.current.find((e) => (e.qr_code || '').toLowerCase() === v || (e.code_dr || '').toLowerCase() === v)
   }
 
   function handleCodeSubmit(e) {
@@ -152,7 +157,7 @@ export default function Scanner() {
       if (stream) stream.getTracks().forEach((t) => t.stop())
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [method, eleves])
+  }, [method])
 
   async function validateScan() {
     if (!selectedEleve) return
