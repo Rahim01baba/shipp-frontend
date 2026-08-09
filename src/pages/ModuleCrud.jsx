@@ -33,6 +33,7 @@ export default function ModuleCrud() {
   const canDelete = can(moduleKey, 'can_delete')
   const canValidate = can(moduleKey, 'can_validate')
   const canExport = can(moduleKey, 'can_export')
+  const domainClass = moduleDef?.domain === 'transport' ? 'btn-transport' : moduleDef?.domain === 'cantine' ? 'btn-cantine' : ''
 
   async function load(def) {
     if (!def) return
@@ -194,7 +195,7 @@ export default function ModuleCrud() {
             </label>
           ))}
           <div className="module-form-actions">
-            <button type="submit" disabled={saving}>
+            <button type="submit" className={domainClass} disabled={saving}>
               {editingId ? 'Mettre a jour' : 'Ajouter'}
             </button>
             {editingId && (
@@ -238,13 +239,13 @@ export default function ModuleCrud() {
                         </Link>
                       )}
                       {canEdit && (
-                        <button type="button" onClick={() => startEdit(row)}>
+                        <button type="button" className={domainClass} onClick={() => startEdit(row)}>
                           Modifier
                         </button>
                       )}
                       {moduleKey === 'abonnements' && canValidate && row.statut !== 'actif' && (
-                        <button type="button" onClick={() => validateRow(row)}>
-                          Valider
+                        <button type="button" className={domainClass} onClick={() => validateRow(row)}>
+                          Approuver
                         </button>
                       )}
                       {canDelete && (
