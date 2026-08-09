@@ -31,6 +31,7 @@ export const MODULES = [
   {
     key: 'transport',
     label: 'Transport',
+    domain: 'transport',
     fields: [
       { key: 'eleve_nom', label: 'Eleve', type: 'text' },
       { key: 'circuit', label: 'Circuit', type: 'text' },
@@ -41,6 +42,7 @@ export const MODULES = [
   {
     key: 'cantine',
     label: 'Cantine',
+    domain: 'cantine',
     fields: [
       { key: 'eleve_nom', label: 'Eleve', type: 'text' },
       { key: 'menu', label: 'Menu', type: 'text' },
@@ -51,6 +53,7 @@ export const MODULES = [
   {
     key: 'vehicules',
     label: 'Vehicules',
+    domain: 'transport',
     fields: [
       { key: 'immatriculation', label: 'Immatriculation', type: 'text' },
       { key: 'modele', label: 'Modele', type: 'text' },
@@ -62,6 +65,7 @@ export const MODULES = [
   {
     key: 'circuits',
     label: 'Circuits',
+    domain: 'transport',
     fields: [
       { key: 'nom', label: 'Nom', type: 'text' },
       { key: 'description', label: 'Description', type: 'text' },
@@ -92,6 +96,7 @@ export const MODULES = [
   {
     key: 'menus',
     label: 'Menus',
+    domain: 'cantine',
     fields: [
       { key: 'date_menu', label: 'Date', type: 'date' },
       {
