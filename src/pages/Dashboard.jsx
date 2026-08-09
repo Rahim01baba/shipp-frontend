@@ -160,6 +160,11 @@ export default function Dashboard() {
               Trajets
             </Link>
           )}
+          {can('affectations_chauffeur', 'can_read') && (
+            <Link to="/fleet" className="module-link">
+              Centre d'exploitation Fleet
+            </Link>
+          )}
           {can('scans', 'can_create') && (
             <Link to="/scanner" className="module-link">
               Scanner
