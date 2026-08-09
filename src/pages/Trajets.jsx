@@ -135,7 +135,7 @@ export default function Trajets() {
             />
           </label>
           <div className="module-form-actions">
-            <button type="submit" disabled={saving}>
+            <button type="submit" className="btn-transport" disabled={saving}>
               {saving ? 'Creation...' : 'Planifier le trajet'}
             </button>
           </div>
@@ -166,23 +166,23 @@ export default function Trajets() {
                   {canEdit && (
                     <td className="module-table-actions">
                       {t.statut === 'planifie' && (
-                        <button type="button" disabled={acting === t.id} onClick={() => doAction(t.id, 'demarrer')}>
-                          Demarrer
+                        <button type="button" className="btn-transport" disabled={acting === t.id} onClick={() => doAction(t.id, 'demarrer')}>
+                          Demarrer le trajet
                         </button>
                       )}
                       {t.statut === 'en_cours' && (
                         <>
-                          <button type="button" disabled={acting === t.id} onClick={() => doAction(t.id, 'avancer')}>
+                          <button type="button" className="btn-transport" disabled={acting === t.id} onClick={() => doAction(t.id, 'avancer')}>
                             Etape suivante
                           </button>
-                          <button type="button" disabled={acting === t.id} onClick={() => doAction(t.id, 'cloturer')}>
-                            Cloturer
+                          <button type="button" className="btn-transport" disabled={acting === t.id} onClick={() => doAction(t.id, 'cloturer')}>
+                            Cloturer le trajet
                           </button>
                         </>
                       )}
                       {t.statut === 'planifie' && (
-                        <button type="button" disabled={acting === t.id} onClick={() => doAction(t.id, 'annuler')}>
-                          Annuler
+                        <button type="button" className="btn-transport" disabled={acting === t.id} onClick={() => doAction(t.id, 'annuler')}>
+                          Annuler le trajet
                         </button>
                       )}
                     </td>
