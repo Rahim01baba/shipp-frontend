@@ -4,7 +4,7 @@ import { api } from '../api/client.js'
 import { useAuth } from '../context/AuthContext.jsx'
 
 const API_URL = import.meta.env.VITE_API_URL || '/api'
-const JSQR_URL = 'https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js'
+const JSQR_URL = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js'
 
 const TYPE_LABELS = {
   transport_embarquement: 'Montee vehicule',
