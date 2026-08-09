@@ -277,8 +277,8 @@ export default function Fleet() {
                     </div>
                   </div>
                   {canEditCouverture && (
-                    <button type="button" disabled={acting} onClick={() => terminerCouverture(cv)}>
-                      Terminer
+                    <button type="button" className="btn-transport" disabled={acting} onClick={() => terminerCouverture(cv)}>
+                      Terminer la couverture
                     </button>
                   )}
                 </div>
@@ -307,17 +307,17 @@ export default function Fleet() {
                     {(canEditAffect || canEditCouverture) && (
                       <td className="module-table-actions">
                         {canEditAffect && (
-                          <button type="button" onClick={() => openReaffect(c, 'chauffeur')}>
+                          <button type="button" className="btn-transport" onClick={() => openReaffect(c, 'chauffeur')}>
                             Changer le titulaire
                           </button>
                         )}
                         {canEditAffect && (
-                          <button type="button" onClick={() => openReaffect(c, 'vehicule')}>
-                            Reaffecter vehicule
+                          <button type="button" className="btn-transport" onClick={() => openReaffect(c, 'vehicule')}>
+                            Changer le vehicule
                           </button>
                         )}
                         {canEditCouverture && (
-                          <button type="button" onClick={() => openCouverture(c)}>
+                          <button type="button" className="btn-transport" onClick={() => openCouverture(c)}>
                             Declarer une couverture
                           </button>
                         )}
@@ -486,7 +486,7 @@ export default function Fleet() {
               </select>
             </label>
             <div className="module-form-actions">
-              <button type="submit" disabled={acting || !reaffectValue}>
+              <button type="submit" className="btn-transport" disabled={acting || !reaffectValue}>
                 Confirmer
               </button>
               <button type="button" onClick={() => setReaffectPanel(null)}>
@@ -571,7 +571,7 @@ export default function Fleet() {
             )}
 
             <div className="module-form-actions">
-              <button type="submit" disabled={acting}>
+              <button type="submit" className="btn-transport" disabled={acting}>
                 Confirmer
               </button>
               <button type="button" onClick={() => setCouverturePanel(null)}>
