@@ -522,3 +522,75 @@ body {
   font-size: 0.8rem;
   color: #999;
 }
+
+.fleet-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 20px;
+  flex-wrap: wrap;
+}
+
+.fleet-tabs button {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.fleet-tabs button.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.fleet-tab-soon {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.fleet-couvertures-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.fleet-panel {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-top: 1.5rem;
+  max-width: 520px;
+}
+
+.fleet-dispo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.fleet-couverture-form {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.fleet-eleves-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid #e2e4e8;
+  border-radius: 6px;
+  padding: 0.6rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.fleet-eleve-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
