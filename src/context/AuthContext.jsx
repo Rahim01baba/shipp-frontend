@@ -3,7 +3,7 @@ import { api, setToken } from '../api/client.js'
 
 const AuthContext = createContext(null)
 
-const emptyAccess = { is_admin: false, permissions: {}, parent_eleve_ids: [] }
+const emptyAccess = { is_admin: false, permissions: {}, parent_eleve_ids: [], chauffeur_circuit_ids: [] }
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
         setAccess({
           is_admin: !!data.is_admin,
           permissions: data.permissions || {},
-          parent_eleve_ids: data.parent_eleve_ids || [],
+          parent_eleve_ids: data.parent_eleve_ids || [], chauffeur_circuit_ids: data.chauffeur_circuit_ids || [],
         })
       )
       .catch(() => setAccess(emptyAccess))
@@ -68,7 +68,7 @@ export function AuthProvider({ children }) {
         loading,
         isAdmin: access.is_admin,
         permissions: access.permissions,
-        parentEleveIds: access.parent_eleve_ids,
+        parentEleveIds: access.parent_eleve_ids, chauffeurCircuitIds: access.chauffeur_circuit_ids,
         accessLoading,
         can,
       }}
