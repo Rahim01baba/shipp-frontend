@@ -147,7 +147,7 @@ export default function CircuitDetail() {
             />
           </label>
           <div className="module-form-actions">
-            <button type="submit" disabled={saving}>
+            <button type="submit" className="btn-transport" disabled={saving}>
               {saving ? 'Ajout...' : "Ajouter l'etape"}
             </button>
           </div>
