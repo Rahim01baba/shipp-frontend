@@ -8,6 +8,7 @@ import EleveDetail from '../pages/EleveDetail.jsx'
 import AnneesScolaires from '../pages/AnneesScolaires.jsx'
 import CircuitDetail from '../pages/CircuitDetail.jsx'
 import Trajets from '../pages/Trajets.jsx'
+import Fleet from '../pages/Fleet.jsx'
 import Scanner from '../pages/Scanner.jsx'
 import CantineService from '../pages/CantineService.jsx'
 import Notifications from '../pages/Notifications.jsx'
@@ -94,6 +95,14 @@ export function AppRouter() {
         element={
           <PrivateRoute>
             <Trajets />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/fleet"
+        element={
+          <PrivateRoute>
+            <Fleet />
           </PrivateRoute>
         }
       />
