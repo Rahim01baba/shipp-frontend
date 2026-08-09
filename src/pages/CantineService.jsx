@@ -141,8 +141,8 @@ export default function CantineService() {
                       {canMark && (
                         <td className="module-table-actions">
                           {!servi && (
-                            <button type="button" disabled={marking === e.id} onClick={() => marquerServi(e.id)}>
-                              {marking === e.id ? 'Enregistrement...' : 'Marquer servi'}
+                            <button type="button" className="btn-cantine" disabled={marking === e.id} onClick={() => marquerServi(e.id)}>
+                              {marking === e.id ? 'Enregistrement...' : 'Marquer comme servi'}
                             </button>
                           )}
                         </td>
