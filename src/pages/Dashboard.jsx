@@ -175,7 +175,12 @@ export default function Dashboard() {
               Service Cantine
             </Link>
           )}
-          {can('notifications', 'can_read') && (
+          {can('abonnements', 'can_read') && (
+                          <Link to="/abonnements" className="module-link">
+                                            Abonnements
+                                          </Link>
+                                        )}
+                            {can('notifications', 'can_read') && (
             <Link to="/notifications" className="module-link">
               Notifications{notifCount > 0 ? ` (${notifCount})` : ''}
             </Link>
