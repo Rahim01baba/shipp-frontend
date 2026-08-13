@@ -39,7 +39,7 @@ export default function Scanner() {
   const [codeValue, setCodeValue] = useState('')
   const [selectedEleve, setSelectedEleve] = useState(null)
   const [scanType, setScanType] = useState('transport_embarquement')
-  const [validating, setValidating] = useState(false)
+  const [validating, setValidating] = useState(false); const [warning, setWarning] = useState(null)
   const [cameraError, setCameraError] = useState(null)
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
@@ -161,7 +161,7 @@ export default function Scanner() {
 
   async function validateScan() {
     if (!selectedEleve) return
-    setValidating(true)
+    setValidating(true); setWarning(null)
     setError(null)
     try {
       const token = localStorage.getItem('shipp_token')
@@ -178,7 +178,7 @@ export default function Scanner() {
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.message || 'Erreur lors de la validation du scan')
+      if (!res.ok) throw new Error(data.message || 'Erreur lors de la validation du scan'); setWarning(data.abonnement_warning === 'abonnement_suspendu' ? 'Attention : abonnement suspendu (scan tout de meme enregistre).' : null)
       setSelectedEleve(null)
       setCodeValue('')
       setSearchTerm('')
@@ -216,7 +216,7 @@ export default function Scanner() {
         <Link to="/">&larr; Tableau de bord</Link>
       </p>
       <h1>Scanner</h1>
-      {error && <p className="error-banner">{error}</p>}
+      {error && <p className="error-banner">{error}</p>}{warning && <p className="scanner-abo-warning">{warning}</p>}
 
       <div className="scanner-tabs">
         <button type="button" className={method === 'camera' ? 'active' : ''} onClick={() => setMethod('camera')}>
