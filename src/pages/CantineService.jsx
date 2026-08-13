@@ -26,7 +26,7 @@ export default function CantineService() {
   const [scans, setScans] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [marking, setMarking] = useState(null)
+  const [marking, setMarking] = useState(null); const [warning, setWarning] = useState(null)
 
   const canMark = can('scans', 'can_create')
   const periode = currentPeriode()
@@ -60,7 +60,7 @@ export default function CantineService() {
   }, [accessLoading])
 
   async function marquerServi(eleveId) {
-    setMarking(eleveId)
+    setMarking(eleveId); setWarning(null)
     setError(null)
     try {
       const token = localStorage.getItem('shipp_token')
@@ -73,7 +73,7 @@ export default function CantineService() {
         body: JSON.stringify({ eleve_id: eleveId, type: 'cantine', methode: 'recherche' }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.message || 'Erreur lors du pointage')
+      if (!res.ok) throw new Error(data.message || 'Erreur lors du pointage'); setWarning(data.abonnement_warning === 'abonnement_suspendu' ? 'Attention : abonnement suspendu (scan tout de meme enregistre).' : null)
       await load()
     } catch (e) {
       setError(e.message)
@@ -97,7 +97,7 @@ export default function CantineService() {
         <Link to="/">&larr; Tableau de bord</Link>
       </p>
       <h1>Service Cantine</h1>
-      {error && <p className="error-banner">{error}</p>}
+      {error && <p className="error-banner">{error}</p>}{warning && <p className="scanner-abo-warning">{warning}</p>}
 
       <div className="cantine-menu-jour">
         <h2>Menu du jour — {PERIODE_LABELS[periode]}</h2>
