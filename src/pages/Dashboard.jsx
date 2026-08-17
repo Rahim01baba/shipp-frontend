@@ -180,7 +180,7 @@ export default function Dashboard() {
                                             Abonnements
                                           </Link>
                                         )}
-                            {can('notifications', 'can_read') && (
+                            {can('finance', 'can_read') && (<Link to="/finance" className="module-link">Finance</Link>)}{can('notifications', 'can_read') && (
             <Link to="/notifications" className="module-link">
               Notifications{notifCount > 0 ? ` (${notifCount})` : ''}
             </Link>
