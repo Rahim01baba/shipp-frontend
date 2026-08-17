@@ -11,7 +11,7 @@ import Trajets from '../pages/Trajets.jsx'
 import Fleet from '../pages/Fleet.jsx'
 import Scanner from '../pages/Scanner.jsx'
 import CantineService from '../pages/CantineService.jsx'
-import Abonnements from '../pages/Abonnements.jsx'
+import Abonnements from '../pages/Abonnements.jsx'; import Finance from '../pages/Finance.jsx'
 import Notifications from '../pages/Notifications.jsx'
 import Parents from '../pages/Parents.jsx'
 import JournalActivite from '../pages/JournalActivite.jsx'
@@ -132,7 +132,7 @@ export function AppRouter() {
                   }
                 />
       <Route
-        path="/notifications"
+        path="/finance" element={<PrivateRoute><Finance /></PrivateRoute>} /><Route path="/notifications"
         element={
           <PrivateRoute>
             <Notifications />
